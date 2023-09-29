@@ -1,0 +1,88 @@
+---
+title: "Hito 1"
+author: "José Ossa"
+format: html
+editor: visual
+---
+
+## Descripción Activo y Contexto (Hito 1)
+
+### Definición
+
+El activo del sector de la banca que se eligió fue la acción del Banco de Chile (CHILE). El Banco de Chile, fundado en 1893, es una reconocida institución financiera en Chile la cual tiene una gran historia de operaciones y presenta una reconocida presencia en el mercado financiero del país, logrando demostrar ser una entidad sólida y estable, que ofrece una amplia variedad de produtos y servicios financieros.
+
+Este activo, y un activo de la banca chilena en general, es relevante estudiar ya que hay un estudio disponible en la Web Of Science que analiza los efectos de los bancos internacionales en el rendimiento de los bancos chilenos. El artículo, llamado "Institutional development and foreign banks in Chile", que tiene una calificación Q1, dice que los bancos internacionales mejoran la competitividad en la bancada de países en desarrollo. Al mismo tiempo, éstos reducen la volatilidad en los retornos y aumentan los créditos de consumo.
+
+### Motivación
+
+La elección de este activo se debe a una serie de razones que hacen que su estudio sea relevante para mí. En primer lugar, y como se mencionó anteriormente, el Banco de Chile es una de las instituciones financieras más grandes del país, lo que demuestra que es una institución sólida y que ha logrado mantener su reputación incluso en condiciones económicas adversas, como por ejemplo, la Pandemia. Hace unos meses, tuve la oportunidad de entrevistar al Tesoreso del Banco de Chile, Sergio Karlezi, en donde me contó las estrategias implementadas en la Pandemia del Covid-19, y hablamos del los superiores retornos en comparación a los otras bancos, por lo que también es de mi interés estudiar este activo.
+
+Otra motivación, y que también se hablo en la entrevista con Sergio, es que el Chile funciona como Banco y su modelo de negocios está enfocado en el cliente. Esto lo respalda un reciente reconocimiento en el ranking PXI - Praxis Xperience Index, donde el Chile fue reconocido como "la más destacada en experiencia de clientes". Esto lo diferencia de los otros bancos agregando valor y logrando captar nuevos clientes.
+
+Finalmente, y esta ya es una motivación más personal, escogí este activo porque voy a realizar la práctica profesional en el Banco de Chile, por lo que creo que es una buena instancia para aprender sobre la institución.
+
+### Contexto
+
+El contexto financiero del Chile será útil para comprender tanto su posición como el desempeño en el mercado. En esta parte del trabajo se hará una descripción estadística de la acción, como también se analizará una variable económica relevante para el estudio.
+
+![](photos/Captura%20de%20Pantalla%202023-09-27%20a%20la(s)%2023.01.56.png)
+
+Gráfico 1: Historial de precios últimos 5 años.
+
+El Gráfico 1 muestro el precio histórico de la acción en un periodo de 5 años. Podemos identificar que a principios del segundo semestre del 2019, la acción rondaba los \$105, sin embargo, la primera caída significativa que se logra identificar es en octubre del 2019, la crisis social. Podemos ver que el precio de la acción continuó disminuyendo producto de la crisis sanitaria, periodo en el que llegó a su mínimo histórico (\$57,15). Desde ese entonces, la accón ha logrado repuntar alcanzando, al día de hoy, un precui de \$90,15 por acción.
+
+Hay ciertos riesgos que hay que tener presentes a la hora de invertir en un activo de este tipo. A continuación hablaré sobre algunos, explicando el efecto sobre el precio de la acción. En primer lugar está el Riesgo de Mercado, que hace referencia a que el precio de la acción oscile dada ciertas condiciones en el marcado, como por ejemplo, eventos económicos globales, lo que puede provocar una disminución en el valor del activo. Al ser un banco, el activo está expuesto al Riesgo Crediticio, de tal manera que el incumplimiento de distintas obligaciones pueden afectar negativamente el precio de la acción. Otro riesgo súper importante en la industria es el Riego de Tasa de Interés, de tal manera que si hay un aumento inesperado en la tasa de interés, esto puede provocar que hayan menores rendimientos, afectando la calidad del activo.
+
+Las rentabilidades del Chile en los últimos 5 años se muestran en la tabla a continuación.
+
+![](photos/Captura%20de%20Pantalla%202023-09-28%20a%20la(s)%2014.32.20.png){fig-align="center" width="240"}
+
+Tabla 1: Rentabilidades anuales CHILE
+
+Como muestra la Tabla 1, y complementando con el Gráfico 1, el 2019 la acción tubo una rentabilidad anual negativa, la que se debe, principalmente, a los eventos ocurridos en octubre de ese año, lo que produjo inestabilidad económica, afectante fuertemente el precio de la acción. En el año 2020 el mercado se vió afectado por la Pandemia, sin embargo, a pesar de la volatilidad en el primer semestre y el tema político, la acción tuvo un rendimiento anual muy poco negativo, lo que se interpreta que el banco logró adaptarse a las condiciones de la coyuntura, lo que no tuvo efectos considerables. El 2021 también el mercado estaba influenciado por el Covid-19, aunque en menor medida que el año anterior. La principal razón de su rendimiento anual negativo es debido a la continuación del Covid-19 y los efectos económicos producidor por las Políticas Fiscales implementadas en la pandemia, así como también aumento en las tasas de interés, entre otros factores. Respecto al 2022, se identifica un cambio significativo respecto a los años anteriores, alcanzando una extraordinaria rentabilidad anual del 36,69%. Las razones del resultado son principalmente las condiciones económicas en Chile, hay mayor confianza en los inversionistas y un eventual crecimiento en la actividad bancaria. Por último, el año en curso lleva una rentabilidad del 17,24%, que se debe, principalmente, a la recuperación económica.
+
+Las tasas de interés influyen directamente tanto en el funcionamiento como en el desempeño del banco. Es por esto que esta será la variable que se analizará brevemente, y que sin dudas, tiene repercusiones en el valor de la acción del Chile.
+
+En primer lugar, las tasas de interés influyen en el margen de interés neto de los bancos. Cuando las tasas aumentan, los bancos cobran más, pero, al mismo tiempo, el banco ofrece una tasa más alta en los depósitos a plazo. Además, cuando las tasas son más altas, es probable que los prestatarios no pidan financiamiento al banco (o menos de lo pensado), lo que se traduce en una reducción de los ingresos por intereses. Finalmente, la tasa de interés influye en la valoración de activos, de tal manera que tasas más altas reducen el valor de los bonos que tiene el banco, afectando directamente el valor de los activos de éste.
+
+![](photos/Captura%20de%20Pantalla%202023-09-28%20a%20la(s)%2018.50.34.png)
+
+Gráfico 2: Rentabilidades Bancos.
+
+El Gráfico 2 muestra las rentabilidades en el periodo octubre 2021 - octubre 2023, donde la línea negra representa al Banco de Chile, la morada al Banco Santander, la amarilla al BCI y la celeste representa el Banco Itaú. Como se logra ver en el gráfico de arriba, notamos que todos los bancos, menos el Chile, tienen más menos la misma tendencia a igual nivel de rentabilidad, sin embargo, el Banco de Chile, fluctua distinto a los otros bancos en comparación y éste de demuestra tener una mayor rentabilidad acumulada en el periodo mencionado anteriormente.
+
+### Análisis de Largo Plazo
+
+#### Caracterización deuda (Aplicación cap. 15)
+
+El Banco de Chile tiene distintas maneras de inversión. En primer lugar, y lo más conocido por las personas, es la inversión a través de los préstamos y créditos, como créditos de consumo, hipotecarios o comerciales. Como se mencionó anteriormente, el banco genera ingresos con los intereses asociados a dichos productos. Además, el Banco de Chile tiene inversiones en acciones de otras empresas, las que generan dividendos y ganancia de capital para el banco. Por otro lado, el Chile utiliza derivados con el objetivo de gestionar el riesgo de mercado.
+
+#### Caracterización de emisiones históricas (Aplicación cap. 20)
+
+Actualmente, el Banco de Chile tiene 101.017.081.114 acciones en circulación. A lo largo del tiempo, el Chile ha realizado emisión de acciones más de 30 veces. La última emisión de acciones fue en el 2018, donde se emitieron 1.572.948.922 nuevas acciones. El 22 de marzo de 2018 se realizó una Junta Extraordinaria de Accionistas, donde el objetivo de la convocatoria era aumentar el capital del banco capitalizando el 40% de la utilidad líquida distribuible correspondiente al ejercicio 2017 mediante la emisión de acciones liberadas de pago sin valor nominal, a un precio de \$93,73 por acción y distribuidas entre los accionistas a razón de 0,02238030880 acciones liberadas de pago por cada acción.
+
+El proceso de emisión en sí comienza en la referida Junta Extraordinaria de Accionistas, en la cual se acuerda aumentar el capital del banco mediante la emisión de una cantidad definida de nuevas acciones. Posteriormente la Superintendencia de Bancos e Instituciones Financieras es la encargada de aprobar la reforma de estatutos, que queda inscrita en el Registro de Comercio de Santiago y es publicada en el Diario Oficial. En este punto la emisión de acciones está inscrita en el Registro de Valores de la Superintendencia. Posterior a lo anterior, el Directorio del Banco de Chile fija una fecha para la emisión y distribución de las respectivas acciones. El directorio informa la razón del derecho a suscripción por acción.Luego de esto, viene el paso de Estabilización del mercado (visto en clases). La información antes mencionada se obtuvo desde la página web del Banco de Chile, en la sección Inversionistas/Junta de accionistas, y luego en el documendo "Junta Accionistas Presentación 2018".
+
+#### Relación con activos derivados
+
+El Banco de Chile tiene contratos de instrumentos financieros derivados con el objetivo de proteger la exposición al riesgo cambiaro y al riesgo de tasa de interés.
+
+En los estados financieros están presentes los Contratos de Derivados de Negociación, como Forwards, Swaps, Opciones Call, Opciones Put y Futuros. Como solo se pide hablar sobre uno de estos derivados, desarrollaré un poco los Forwards. "Un Forward es un contrato entre dos partes para comprar o vender un activo subyacente en un determinado precio y fecha". Estos contratos son utilizados con el objetivo de cubrir el riesgo al cambio de precios de activos.
+
+### Reporte grupal
+
+En relación a los activos considerados por el grupo, se debe tomar la desición de cómo distribuir los porcentajes de cada uno de ellos, con el fin de determinar un portafolio de inversión. Este último se creará en base a ciertos criterios que se comentarán a continuación, con el fin de maximizar los retornos manteniendo la exposición al riesgo lo más controlado posible.
+
+| Activo        | Porcentaje |
+|---------------|------------|
+| CENCOSUD S.A  | 40%        |
+| CHILE         | 40%        |
+| ENELCHILE S.A | 20%        |
+
+Estos porcentajes fueron distribuidos de esta manera, ya que cada activo tiene aspectos favorables como desfavorables pero en relación a la rentabilidad esperada se cree que estos representan un portafolio diversificado correctamente. A continuación se identificarán con mayor precisión los puntos relevantes para la determiunación de los porcentajes en base a cada activo en cuestión.
+
+Para el activo BANCO DE CHILE, se determinó destinar un 40% del portafolio ya que ha demostrado ser el banco con mayores utilidades en comparación a su competencia y destaca por un alto ROE. Además, se espera que siga con tendencia positiva, además de seguir superando a su competencia. Es por esto que se determinó asignar un 40% del portafolio a las acciones del Banco de Chile.
+
+Para el activo CENCOSUD S.A , se determinó destinar un 40% del portafolio a este activo debido a que la empresa ha logrado en el último tiempo estabilizar los resultados en Brasil y Colombia lo que estaba impactando negativamente a la compañía. Por otro lado, el negocio relacionado al retail y supermercados se ha visto en alza lo que representa un mayor ingreso para la compañía y beneficio para el país. Continuando con lo anterior, parece importante destinar un porcentaje a este activo debido a que, en relación a las diversas instituciones de clasificación de riesgo, Cencosud S.A figura como una institución estable lo que atrae nuevos inversionistas y posibles retribuciones en relación a las utilidades de la empresa para ser repartidas tal como lo fueron los dividendos otorgados a los accionistas recientemente.
+
+Para el activo ENEL CHILE S.A, se determinó destinar un menor porcentaje que los otros activos en el portafolio, debido a que esta empresa ha tenido ciertas dificultades en el último tiempo. En primer lugar, se puede identificar la mega sequía que se ha vivido en los últimos años, lo que complica la obtención de energía mediante las hidroelectricas. Esto último, luego de el transcurso del año 2023, se ha visto mejorado por el fenómeno del niño, el cual ha producido una mayor cantidad de precipitaciones generando con ello la recuperación de embalses de acumulación de agua. Lo anterior, beneficia a esta empresa para poder producir energía, pero cabe mencionar que sigue siendo una empresa que representa un mayor riesgo para los inversionistas debido a que se ve afectada por fenómenos naturales incontrolables por el ser humano. Es por este motivo, que parece razonable destinar un porcentaje más cauto con el fin de rentabilizar de mejor manera la inversión controlando de mejor manera la exposición al riesgo.
