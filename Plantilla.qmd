@@ -86,3 +86,158 @@ Para el activo BANCO DE CHILE, se determinó destinar un 40% del portafolio ya q
 Para el activo CENCOSUD S.A , se determinó destinar un 40% del portafolio a este activo debido a que la empresa ha logrado en el último tiempo estabilizar los resultados en Brasil y Colombia lo que estaba impactando negativamente a la compañía. Por otro lado, el negocio relacionado al retail y supermercados se ha visto en alza lo que representa un mayor ingreso para la compañía y beneficio para el país. Continuando con lo anterior, parece importante destinar un porcentaje a este activo debido a que, en relación a las diversas instituciones de clasificación de riesgo, Cencosud S.A figura como una institución estable lo que atrae nuevos inversionistas y posibles retribuciones en relación a las utilidades de la empresa para ser repartidas tal como lo fueron los dividendos otorgados a los accionistas recientemente.
 
 Para el activo ENEL CHILE S.A, se determinó destinar un menor porcentaje que los otros activos en el portafolio, debido a que esta empresa ha tenido ciertas dificultades en el último tiempo. En primer lugar, se puede identificar la mega sequía que se ha vivido en los últimos años, lo que complica la obtención de energía mediante las hidroelectricas. Esto último, luego de el transcurso del año 2023, se ha visto mejorado por el fenómeno del niño, el cual ha producido una mayor cantidad de precipitaciones generando con ello la recuperación de embalses de acumulación de agua. Lo anterior, beneficia a esta empresa para poder producir energía, pero cabe mencionar que sigue siendo una empresa que representa un mayor riesgo para los inversionistas debido a que se ve afectada por fenómenos naturales incontrolables por el ser humano. Es por este motivo, que parece razonable destinar un porcentaje más cauto con el fin de rentabilizar de mejor manera la inversión controlando de mejor manera la exposición al riesgo.
+
+### Aplicación Black-Scholes
+
+En el marco del análisis del activo seleccionado, se ha llevado a cabo una valoración de una opción para comprar un activo subyacente. Esto permite comprender el valor intrínseco y tener mayor claridad al momento de tomar decisiones, lo que es fundamental para la toma de decisiones en las inversiones.
+
+Con el fin de llevar a cabo esta valorización, se utilizó el modelo de Black-Scholes, herramienta fundamental según la teoría de opciones financieras que se ha posicionado como un estándar aceptado por la industria. Varios parámetros clave deben tenerse en consideración para calcular el valor de la opción.
+
+Para respaldar el proceso de valorización, se implementó un código en R que implementa la fórmula matemática Black-Scholes, tal como se mencionó anteriormente. Para esta implementación, se calculó la volatilidad de los retornos del activo. Se consideró un horizonte de 5 años para determinar dicho valor. Por otro lado, como tasa libre de riesgo se utilizó el retorno de un bono del Banco Central 10 años plazo (6,6%). Para ver el valor actual del activo, se obtiene mediante una función que busca el precio actual del activo en Yahoo Finance. Por último, el tiempo de vencimiento en años se fijó en 6 meses.
+
+```{r}
+
+library(quantmod)
+symbol <- "CHILE.SN"
+
+# Precio actual de CHILE
+current_price <- getQuote(symbol)$Last
+cat("El precio actual de la acción del Banco de Chile (CHILE) es:", current_price, "\n")
+
+# Datos desde Yahoo Finance
+getSymbols(symbol, from = "2018-10-23", to = "2023-10-24", src = "yahoo", adjust = TRUE)
+
+chile <- Cl(get(symbol)) #Precios ajustados al cierre
+
+# Retornos diarios
+retornos <- dailyReturn(chile)
+
+# Volatilidad
+volatilidad <- sd(retornos, na.rm = TRUE)
+
+
+cat("La volatilidad basada en los retornos diarios de la acción del Banco de Chile (CHILE) es:", volatilidad, "\n")
+
+# Parametros función
+S <- as.numeric(current_price)  # Precio actual acción
+K <- 91                         # Precio  ejercicio
+T <- 0.5                        # Tiempo de vencimiento (en años)
+r <- 0.066                      # Tasa libre de riesgo
+sigma <- 0.01838212             # Volatilidad de los últimos 5 años 
+# Función para calcular el precio de una opción call utilizando el modelo Black-Scholes
+
+black_scholes <- function(S, K, T, r, sigma) {
+  d1 <- (log(S / K) + (r + (sigma^2) / 2) * T) / (sigma * sqrt(T))
+  d2 <- d1 - sigma * sqrt(T)
+  
+  # Calcular el precio de la opción call
+  precio_call <- S * pnorm(d1) - K * exp(-r * T) * pnorm(d2)
+  
+  return(precio_call)
+}
+
+# Calcular el precio de la opción call
+precio_call <- black_scholes(S, K, T, r, sigma)
+cat("El precio de la opción call es:", precio_call, "\n")
+
+
+
+```
+
+### Modelo Adicional de valorizacion
+
+El modelo de valorización alternativo que se utiliza es el Modelo Binomial. Este modelo representa otra opción válida frente al modelo utilizado anteriormente (Black-Scholes) y se sustenta en la idea fundamental de que el valor correspondiente al actuvo subyacente puede variar hacia dos direcciones diferentes a lo largo de cada periodo de tiempo. A pesar de ser más simple que el modelo Black-Scholes, este modelo puede resultar útil cuando las condiciones del mercado no cumplen con todas las suposiciones requeridas por dicho modelo. Con este modelo es posible capturar con mayor flexibilidad las variaciones de volatilidad y otras condiciones del mercado que no se ajustan completamente a las suposiciones del primer modelo.
+
+Es justificable la elección del Modelo Binomial como un modelo alternativo ya que hay un estudio científico disponible en la Web Of Science el cual estudia como los dos modelos son aproximadamente iguales entre sí en un periodo. El estudio determina que la correlación entre la opción de compra y venta utilizando ambos modelos está perfectamente correlacionada positivamente. Además, la prueba estadística t mostró que no hay diferencias significativas entre la opción "call" o "put" usando ambos modelos, con un intervalo de confianza del 95%. El estudio concluye con que no hay una diferencia estadísticamente significativa entre el Modelo Black-Scholes y el Modelo Binomial (Ahmad & N, 2018). Dicho lo anterior, hay una justificación científica para elegir el Modelo Binomial como un modelo alternativo al Modelo Black-Scholes.
+
+### Aplicacion modelo adicional
+
+A continuación, se presentará un código en R Studio en el cual, como se mencionó anteriormente, se usa el Modelo Binomial como modelo de valorización alternativo.
+
+```{r}
+
+library(quantmod)
+symbol <- "CHILE.SN"
+
+# Datos Yahoo Finance
+getSymbols(symbol, from = "2018-10-23", to = "2023-10-24", src = "yahoo", adjust = TRUE)
+
+# Precio cierre ajustado
+chile <- Cl(get(symbol))
+
+# Precio actual acción
+current_price <- getQuote(symbol)$Last
+cat("El precio actual de la acción del Banco de Chile (CHILE) es:", current_price, "\n")
+
+# Parámetros función
+S0 <- as.numeric(current_price)  # Precio actual de CHILE
+K <- 91                          # Precio de ejercicio
+r <- 0.066                       # Tasa libre de riesgo 
+T <- 1                           # Tiempo de vencimiento (en años)
+N <- 1                           # Número de pasos
+u <- 1.1                        # Factor de aumento del precio
+d <- 0.9                        # Factor de disminución del precio
+
+# Probabilidad de movimiento hacia arriba
+p <- (1 + r - d) / (u - d)
+
+# Matriz para almacenar los precios en cada paso del tiempo
+option_prices <- matrix(0, ncol = N + 1, nrow = N + 1)
+
+# Calcular los precios de la opción al vencimiento
+for (j in 0:N) {
+  option_prices[N + 1, j + 1] <- max(S0 * u^j * d^(N - j) - K, 0)
+}
+
+# Calcular los precios de la opción hacia atrás en el tiempo
+for (i in N:1) {
+  for (j in 0:i - 1) {
+    option_prices[i, j + 1] <- (p * option_prices[i + 1, j + 1] + (1 - p) * option_prices[i + 1, j + 2]) / (1 + r)
+  }
+}
+
+# El precio de la opción de compra está en la celda (1,1) de la matriz
+option_price <- option_prices[1, 1]
+
+
+cat("El precio de la opción utilizando el modelo binomial es:", option_price, "\n")
+
+```
+
+### Análisis de contraste de ambos modelos
+
+Como se dijo anteriormente, el Modelo Binomial es una buena opción alternativa al momento de hacer una valoción de una opción de un activo. Ambos modelos tienen similitudes y diferencias. El precio de la opción utilizando el Modelo Black-Scholes fue de \$3.351904, mientras que utilizando el Modelo Binomial, resultó un precio de \$1.510225.
+
+Iniciando con las similitudes de estos modelos, tenemos que ambos son utilizados para valorar opciones financieras. Estos enfoques permiter estimar el precio de una opción en un determinado mercado. En segundo lugar, se tiene que ambos modelos se fundamentas en la premisa de que los precios de los activos subyacentes pueden fluctuar con el tiempo debido a su volatilidad y a la tasa libre de riesgo del mercado. Por último, se tiene la utilización de parámetros fundamentales, como el precio actual del activo, el precio de ejercicio, tasa libre de riesgo, volatilidad, entre otros.
+
+Respecto a las diferencias entre estos modelos, en primer lugar se tiene el métido utilizado para realizar los cálculos. Por una parte, Black-Scholes se basa en una aproximación continua, por otra parte, el Modelo Binomial ofrece un enfoque discreto. Otra diferencia es el resultado de las valoraciones, como se mencionó anteriormente. La explicación de esta diferencia podría explicarse por las supociones y aproximaciones de cada modelo.
+
+### Reporte Grupal: Caso Administración
+
+De acuerdo al caso de administración de efectivo de Braam Industries presente en el libro ROSS, se procedió a resolver este en base a los datos del activo financiero Banco de Chile. Para esto, fue necesario comprender y determinar ciertos valores que se observan en la imagen del archivo excel presentado a continuación.
+
+![](Captura de Pantalla 2023-10-26 a la(s) 20.03.22.png)
+
+En primer lugar, se tienen las ventas anuales. Para ello fue necesario investigar en la página del banco cual era el valor de estas, logrando obtener, para el año 2022, un monto de MM\$55.255.362 (Banco de Chile, 2022). Posterior a ello, se tuvo que indagar con respecto a la tasa de incumplimiento o morosidad, obteniendo una tasa de 1,32% (CMF, 2023). Luego, se tuvo que realizar el cálculo para determinar los costos administrativos utilizando la fórmula : Total gastos de administración / Ventas anuales (en %), logrando un valor de 0,64%. Finalmente, con estos datos y otros provistos por enunciado, se logró determinar el VPN (valor presente neto) con el fin de determinar cual de las tres opciones es la que otorga un mayor valor. Estas opciones se determinaron en base a los datos propuestos actualmente y luego con estos, a través de la regla de tres, se fue rellenando la tabla hasta obtener lo necesario para realizar el estudio en cuestión.
+
+Con la realización de estos cálculos, se logró determinar que la opción que maximiza el VPN es la opción 1, obteniendo un valor de MM\$13.426.115, que se encuentra por sobre las otras 2 opciones disponibles.
+
+Ahora bien, respondiendo a la primera pregunta propuesta por el libro de Ross, la política de crédito que debiese adoptar la empresa es la opción 1, debido a que esta es la que representa un mayor beneficio para la empresa.
+
+Continuando con las preguntas, ahora se tiene que estudiar si es factible que la opción 2 tenga tasa de incumplimiento y costos administrativos mayor a los de la opción 3. Esto, en base a los resultados provistos para el activo estudiado "Banco de Chile" es factible y puede deberse a varios factores tales como:
+
+Mejores prácticas administrativas : La reducción en los costos administrativos podría demostrar que la Opción 2 tiene procedimientos administrativos mejor optimizados esto se logra a través de la automatización de tareas y utilización de nuevas tecnologías.
+
+Economías de escala : En la teoría, se puede tener que la opción 2 tenga ventas similares o menores que la opción 3, esto podría lograrse en base a la optimización de procesos en las operaciones con el fin de aprovechar el concepto de economias de escala.
+
+Se puede considerar viable que una opción tenga niveles más bajos en cuanto a tasas de incumplimiento y costos administrativos en relación con otra alternativa, basándose en las políticas internas, estrategias de gestión y características específicas del mercado objetivo. Se debe realizar un análisis profundo de las políticas y prácticas de cada opción con el fin de comprender plenamente las razones detrás de estas diferencias.
+
+### **Referencias**
+
+-   Ahmad, A., & N, A. (2018). *Comparison: Binomial model and Black Scholes model*. Web Of Science. https://www.webofscience.com/wos/woscc/full-record/WOS:000442608200008
+
+-   Banco de Chile. (2022). *Memoria Anual 2022*. https://portales.bancochile.cl/uploads/000/045/680/42b47795-da00-472d-93c7-323ce640b28f/original/Memoria_BCH_2022_interactiva-Optimizada.pdf
+
+-   *Indicador de morosidad de 90 días o más individual del Sistema Bancario*. (2023, agosto). CMF. https://www.cmfchile.cl/portal/estadisticas/617/w3-propertyvalue-28914.html
+
+-   
