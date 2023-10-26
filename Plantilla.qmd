@@ -154,6 +154,12 @@ Es justificable la elección del Modelo Binomial como un modelo alternativo ya q
 
 A continuación, se presentará un código en R Studio en el cual, como se mencionó anteriormente, se usa el Modelo Binomial como modelo de valorización alternativo.
 
+La fórmula matemática aplicada para el modelo alternativo es la siguiente:
+
+![](Captura de Pantalla 2023-10-26 a la(s) 20.24.53.png)
+
+Donde C es el precio de la opción, p es la probabilidad implícita de ascendo, (1-p) es la probabilidad implícita de descenso, Cu es el valor de la opción en estado up, mientras que Cd es el valor de la opción en estado down. Por último, Rf corresponde a la tasa libre de riesgo.
+
 ```{r}
 
 library(quantmod)
@@ -216,7 +222,7 @@ Respecto a las diferencias entre estos modelos, en primer lugar se tiene el mét
 
 De acuerdo al caso de administración de efectivo de Braam Industries presente en el libro ROSS, se procedió a resolver este en base a los datos del activo financiero Banco de Chile. Para esto, fue necesario comprender y determinar ciertos valores que se observan en la imagen del archivo excel presentado a continuación.
 
-![](Captura de Pantalla 2023-10-26 a la(s) 20.03.22.png)
+![](Captura%20de%20Pantalla%202023-10-26%20a%20la(s)%2020.03.22.png)
 
 En primer lugar, se tienen las ventas anuales. Para ello fue necesario investigar en la página del banco cual era el valor de estas, logrando obtener, para el año 2022, un monto de MM\$55.255.362 (Banco de Chile, 2022). Posterior a ello, se tuvo que indagar con respecto a la tasa de incumplimiento o morosidad, obteniendo una tasa de 1,32% (CMF, 2023). Luego, se tuvo que realizar el cálculo para determinar los costos administrativos utilizando la fórmula : Total gastos de administración / Ventas anuales (en %), logrando un valor de 0,64%. Finalmente, con estos datos y otros provistos por enunciado, se logró determinar el VPN (valor presente neto) con el fin de determinar cual de las tres opciones es la que otorga un mayor valor. Estas opciones se determinaron en base a los datos propuestos actualmente y luego con estos, a través de la regla de tres, se fue rellenando la tabla hasta obtener lo necesario para realizar el estudio en cuestión.
 

@@ -21,6 +21,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -150,27 +184,174 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="aplicación-black-scholes" class="level3">
 <h3 class="anchored" data-anchor-id="aplicación-black-scholes">Aplicación Black-Scholes</h3>
-<p>Se valoriza correctamente una opción de compra del activo principal definido en el Hito 1, utilizando el modelo de Black-Scholes continuo apoyándose de un código replicable que compute el modelo. Se apoya de literatura para complementar su valorización.</p>
+<p>En el marco del análisis del activo seleccionado, se ha llevado a cabo una valoración de una opción para comprar un activo subyacente. Esto permite comprender el valor intrínseco y tener mayor claridad al momento de tomar decisiones, lo que es fundamental para la toma de decisiones en las inversiones.</p>
+<p>Con el fin de llevar a cabo esta valorización, se utilizó el modelo de Black-Scholes, herramienta fundamental según la teoría de opciones financieras que se ha posicionado como un estándar aceptado por la industria. Varios parámetros clave deben tenerse en consideración para calcular el valor de la opción.</p>
+<p>Para respaldar el proceso de valorización, se implementó un código en R que implementa la fórmula matemática Black-Scholes, tal como se mencionó anteriormente. Para esta implementación, se calculó la volatilidad de los retornos del activo. Se consideró un horizonte de 5 años para determinar dicho valor. Por otro lado, como tasa libre de riesgo se utilizó el retorno de un bono del Banco Central 10 años plazo (6,6%). Para ver el valor actual del activo, se obtiene mediante una función que busca el precio actual del activo en Yahoo Finance. Por último, el tiempo de vencimiento en años se fijó en 6 meses.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quantmod)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: xts</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: zoo</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'zoo'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    as.Date, as.Date.numeric</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: TTR</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Registered S3 method overwritten by 'quantmod':
+  method            from
+  as.zoo.data.frame zoo </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>symbol <span class="ot">&lt;-</span> <span class="st">"CHILE.SN"</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Precio actual de CHILE</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>current_price <span class="ot">&lt;-</span> <span class="fu">getQuote</span>(symbol)<span class="sc">$</span>Last</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"El precio actual de la acción del Banco de Chile (CHILE) es:"</span>, current_price, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>El precio actual de la acción del Banco de Chile (CHILE) es: 91.24 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Datos desde Yahoo Finance</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">getSymbols</span>(symbol, <span class="at">from =</span> <span class="st">"2018-10-23"</span>, <span class="at">to =</span> <span class="st">"2023-10-24"</span>, <span class="at">src =</span> <span class="st">"yahoo"</span>, <span class="at">adjust =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "CHILE.SN"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>chile <span class="ot">&lt;-</span> <span class="fu">Cl</span>(<span class="fu">get</span>(symbol)) <span class="co">#Precios ajustados al cierre</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Retornos diarios</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>retornos <span class="ot">&lt;-</span> <span class="fu">dailyReturn</span>(chile)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Volatilidad</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>volatilidad <span class="ot">&lt;-</span> <span class="fu">sd</span>(retornos, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"La volatilidad basada en los retornos diarios de la acción del Banco de Chile (CHILE) es:"</span>, volatilidad, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>La volatilidad basada en los retornos diarios de la acción del Banco de Chile (CHILE) es: 0.01838212 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Parametros función</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>S <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(current_price)  <span class="co"># Precio actual acción</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>K <span class="ot">&lt;-</span> <span class="dv">91</span>                         <span class="co"># Precio  ejercicio</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>T <span class="ot">&lt;-</span> <span class="fl">0.5</span>                        <span class="co"># Tiempo de vencimiento (en años)</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fl">0.066</span>                      <span class="co"># Tasa libre de riesgo</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>sigma <span class="ot">&lt;-</span> <span class="fl">0.01838212</span>             <span class="co"># Volatilidad de los últimos 5 años </span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Función para calcular el precio de una opción call utilizando el modelo Black-Scholes</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>black_scholes <span class="ot">&lt;-</span> <span class="cf">function</span>(S, K, T, r, sigma) {</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  d1 <span class="ot">&lt;-</span> (<span class="fu">log</span>(S <span class="sc">/</span> K) <span class="sc">+</span> (r <span class="sc">+</span> (sigma<span class="sc">^</span><span class="dv">2</span>) <span class="sc">/</span> <span class="dv">2</span>) <span class="sc">*</span> T) <span class="sc">/</span> (sigma <span class="sc">*</span> <span class="fu">sqrt</span>(T))</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>  d2 <span class="ot">&lt;-</span> d1 <span class="sc">-</span> sigma <span class="sc">*</span> <span class="fu">sqrt</span>(T)</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Calcular el precio de la opción call</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>  precio_call <span class="ot">&lt;-</span> S <span class="sc">*</span> <span class="fu">pnorm</span>(d1) <span class="sc">-</span> K <span class="sc">*</span> <span class="fu">exp</span>(<span class="sc">-</span>r <span class="sc">*</span> T) <span class="sc">*</span> <span class="fu">pnorm</span>(d2)</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(precio_call)</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Calcular el precio de la opción call</span></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>precio_call <span class="ot">&lt;-</span> <span class="fu">black_scholes</span>(S, K, T, r, sigma)</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"El precio de la opción call es:"</span>, precio_call, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>El precio de la opción call es: 3.195069 </code></pre>
+</div>
+</div>
 </section>
 <section id="modelo-adicional-de-valorizacion" class="level3">
 <h3 class="anchored" data-anchor-id="modelo-adicional-de-valorizacion">Modelo Adicional de valorizacion</h3>
-<p>Se explica junto con descripcion matemática (fórmulas) correcta un modelo alternativo para valorizar la accion haciendo revisión de literatura cientifica con tal de hacer una referencia a un artículo del modelo.</p>
+<p>El modelo de valorización alternativo que se utiliza es el Modelo Binomial. Este modelo representa otra opción válida frente al modelo utilizado anteriormente (Black-Scholes) y se sustenta en la idea fundamental de que el valor correspondiente al actuvo subyacente puede variar hacia dos direcciones diferentes a lo largo de cada periodo de tiempo. A pesar de ser más simple que el modelo Black-Scholes, este modelo puede resultar útil cuando las condiciones del mercado no cumplen con todas las suposiciones requeridas por dicho modelo. Con este modelo es posible capturar con mayor flexibilidad las variaciones de volatilidad y otras condiciones del mercado que no se ajustan completamente a las suposiciones del primer modelo.</p>
+<p>Es justificable la elección del Modelo Binomial como un modelo alternativo ya que hay un estudio científico disponible en la Web Of Science el cual estudia como los dos modelos son aproximadamente iguales entre sí en un periodo. El estudio determina que la correlación entre la opción de compra y venta utilizando ambos modelos está perfectamente correlacionada positivamente. Además, la prueba estadística t mostró que no hay diferencias significativas entre la opción “call” o “put” usando ambos modelos, con un intervalo de confianza del 95%. El estudio concluye con que no hay una diferencia estadísticamente significativa entre el Modelo Black-Scholes y el Modelo Binomial (Ahmad &amp; N, 2018). Dicho lo anterior, hay una justificación científica para elegir el Modelo Binomial como un modelo alternativo al Modelo Black-Scholes.</p>
 </section>
 <section id="aplicacion-modelo-adicional" class="level3">
 <h3 class="anchored" data-anchor-id="aplicacion-modelo-adicional">Aplicacion modelo adicional</h3>
-<p>Se aplica el modelo alternativo apoyandose de un código replicable que computa el modelo.</p>
+<p>A continuación, se presentará un código en R Studio en el cual, como se mencionó anteriormente, se usa el Modelo Binomial como modelo de valorización alternativo.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quantmod)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>symbol <span class="ot">&lt;-</span> <span class="st">"CHILE.SN"</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Datos Yahoo Finance</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="fu">getSymbols</span>(symbol, <span class="at">from =</span> <span class="st">"2018-10-23"</span>, <span class="at">to =</span> <span class="st">"2023-10-24"</span>, <span class="at">src =</span> <span class="st">"yahoo"</span>, <span class="at">adjust =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "CHILE.SN"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Precio cierre ajustado</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>chile <span class="ot">&lt;-</span> <span class="fu">Cl</span>(<span class="fu">get</span>(symbol))</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Precio actual acción</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>current_price <span class="ot">&lt;-</span> <span class="fu">getQuote</span>(symbol)<span class="sc">$</span>Last</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"El precio actual de la acción del Banco de Chile (CHILE) es:"</span>, current_price, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>El precio actual de la acción del Banco de Chile (CHILE) es: 91.24 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Parámetros función</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>S0 <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(current_price)  <span class="co"># Precio actual de CHILE</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>K <span class="ot">&lt;-</span> <span class="dv">91</span>                          <span class="co"># Precio de ejercicio</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fl">0.066</span>                       <span class="co"># Tasa libre de riesgo </span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>T <span class="ot">&lt;-</span> <span class="dv">1</span>                           <span class="co"># Tiempo de vencimiento (en años)</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">1</span>                           <span class="co"># Número de pasos</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>u <span class="ot">&lt;-</span> <span class="fl">1.1</span>                        <span class="co"># Factor de aumento del precio</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fl">0.9</span>                        <span class="co"># Factor de disminución del precio</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Probabilidad de movimiento hacia arriba</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> (<span class="dv">1</span> <span class="sc">+</span> r <span class="sc">-</span> d) <span class="sc">/</span> (u <span class="sc">-</span> d)</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Matriz para almacenar los precios en cada paso del tiempo</span></span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>option_prices <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">ncol =</span> N <span class="sc">+</span> <span class="dv">1</span>, <span class="at">nrow =</span> N <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Calcular los precios de la opción al vencimiento</span></span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">0</span><span class="sc">:</span>N) {</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>  option_prices[N <span class="sc">+</span> <span class="dv">1</span>, j <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">max</span>(S0 <span class="sc">*</span> u<span class="sc">^</span>j <span class="sc">*</span> d<span class="sc">^</span>(N <span class="sc">-</span> j) <span class="sc">-</span> K, <span class="dv">0</span>)</span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Calcular los precios de la opción hacia atrás en el tiempo</span></span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> N<span class="sc">:</span><span class="dv">1</span>) {</span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">0</span><span class="sc">:</span>i <span class="sc">-</span> <span class="dv">1</span>) {</span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>    option_prices[i, j <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> (p <span class="sc">*</span> option_prices[i <span class="sc">+</span> <span class="dv">1</span>, j <span class="sc">+</span> <span class="dv">1</span>] <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">-</span> p) <span class="sc">*</span> option_prices[i <span class="sc">+</span> <span class="dv">1</span>, j <span class="sc">+</span> <span class="dv">2</span>]) <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">+</span> r)</span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a><span class="co"># El precio de la opción de compra está en la celda (1,1) de la matriz</span></span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>option_price <span class="ot">&lt;-</span> option_prices[<span class="dv">1</span>, <span class="dv">1</span>]</span>
+<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"El precio de la opción utilizando el modelo binomial es:"</span>, option_price, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>El precio de la opción utilizando el modelo binomial es: 1.493321 </code></pre>
+</div>
+</div>
 </section>
 <section id="análisis-de-contraste-de-ambos-modelos" class="level3">
 <h3 class="anchored" data-anchor-id="análisis-de-contraste-de-ambos-modelos">Análisis de contraste de ambos modelos</h3>
-<p>Se realiza una comparación de los resultados de ambos modelos de valorización explicando sus similitudes y diferencias.</p>
+<p>Como se dijo anteriormente, el Modelo Binomial es una buena opción alternativa al momento de hacer una valoción de una opción de un activo. Ambos modelos tienen similitudes y diferencias. El precio de la opción utilizando el Modelo Black-Scholes fue de $3.351904, mientras que utilizando el Modelo Binomial, resultó un precio de $1.510225.</p>
+<p>Iniciando con las similitudes de estos modelos, tenemos que ambos son utilizados para valorar opciones financieras. Estos enfoques permiter estimar el precio de una opción en un determinado mercado. En segundo lugar, se tiene que ambos modelos se fundamentas en la premisa de que los precios de los activos subyacentes pueden fluctuar con el tiempo debido a su volatilidad y a la tasa libre de riesgo del mercado. Por último, se tiene la utilización de parámetros fundamentales, como el precio actual del activo, el precio de ejercicio, tasa libre de riesgo, volatilidad, entre otros.</p>
+<p>Respecto a las diferencias entre estos modelos, en primer lugar se tiene el métido utilizado para realizar los cálculos. Por una parte, Black-Scholes se basa en una aproximación continua, por otra parte, el Modelo Binomial ofrece un enfoque discreto. Otra diferencia es el resultado de las valoraciones, como se mencionó anteriormente. La explicación de esta diferencia podría explicarse por las supociones y aproximaciones de cada modelo.</p>
 </section>
 <section id="reporte-grupal-caso-administración" class="level3">
 <h3 class="anchored" data-anchor-id="reporte-grupal-caso-administración">Reporte Grupal: Caso Administración</h3>
-<p>Se eligen uno de los siguientes casos con tal de replicar y responder sus preguntas de acuerdo al activo principal elegido:</p>
+<p>De acuerdo al caso de administración de efectivo de Braam Industries presente en el libro ROSS, se procedió a resolver este en base a los datos del activo financiero Banco de Chile. Para esto, fue necesario comprender y determinar ciertos valores que se observan en la imagen del archivo excel presentado a continuación.</p>
+<p><img src="Captura%20de%20Pantalla%202023-10-26%20a%20la(s)%2020.03.22.png" class="img-fluid"></p>
+<p>En primer lugar, se tienen las ventas anuales. Para ello fue necesario investigar en la página del banco cual era el valor de estas, logrando obtener, para el año 2022, un monto de MM$55.255.362 (Banco de Chile, 2022). Posterior a ello, se tuvo que indagar con respecto a la tasa de incumplimiento o morosidad, obteniendo una tasa de 1,32% (CMF, 2023). Luego, se tuvo que realizar el cálculo para determinar los costos administrativos utilizando la fórmula : Total gastos de administración / Ventas anuales (en %), logrando un valor de 0,64%. Finalmente, con estos datos y otros provistos por enunciado, se logró determinar el VPN (valor presente neto) con el fin de determinar cual de las tres opciones es la que otorga un mayor valor. Estas opciones se determinaron en base a los datos propuestos actualmente y luego con estos, a través de la regla de tres, se fue rellenando la tabla hasta obtener lo necesario para realizar el estudio en cuestión.</p>
+<p>Con la realización de estos cálculos, se logró determinar que la opción que maximiza el VPN es la opción 1, obteniendo un valor de MM$13.426.115, que se encuentra por sobre las otras 2 opciones disponibles.</p>
+<p>Ahora bien, respondiendo a la primera pregunta propuesta por el libro de Ross, la política de crédito que debiese adoptar la empresa es la opción 1, debido a que esta es la que representa un mayor beneficio para la empresa.</p>
+<p>Continuando con las preguntas, ahora se tiene que estudiar si es factible que la opción 2 tenga tasa de incumplimiento y costos administrativos mayor a los de la opción 3. Esto, en base a los resultados provistos para el activo estudiado “Banco de Chile” es factible y puede deberse a varios factores tales como:</p>
+<p>Mejores prácticas administrativas : La reducción en los costos administrativos podría demostrar que la Opción 2 tiene procedimientos administrativos mejor optimizados esto se logra a través de la automatización de tareas y utilización de nuevas tecnologías.</p>
+<p>Economías de escala : En la teoría, se puede tener que la opción 2 tenga ventas similares o menores que la opción 3, esto podría lograrse en base a la optimización de procesos en las operaciones con el fin de aprovechar el concepto de economias de escala.</p>
+<p>Se puede considerar viable que una opción tenga niveles más bajos en cuanto a tasas de incumplimiento y costos administrativos en relación con otra alternativa, basándose en las políticas internas, estrategias de gestión y características específicas del mercado objetivo. Se debe realizar un análisis profundo de las políticas y prácticas de cada opción con el fin de comprender plenamente las razones detrás de estas diferencias.</p>
+</section>
+<section id="referencias" class="level3">
+<h3 class="anchored" data-anchor-id="referencias"><strong>Referencias</strong></h3>
 <ul>
-<li><p>Caso Administración de Capital de Trabajo de Keafer Manufacturing de la página 822 del ROSS.</p></li>
-<li><p>Caso Administración de Efectivo de Richmond Corporation de la página 845 del ROSS.</p></li>
-<li><p>Caso Administración de Efectivo de Braam Industries de la página 874 del ROSS.</p></li>
+<li><p>Ahmad, A., &amp; N, A. (2018). <em>Comparison: Binomial model and Black Scholes model</em>. Web Of Science. https://www.webofscience.com/wos/woscc/full-record/WOS:000442608200008</p></li>
+<li><p>Banco de Chile. (2022). <em>Memoria Anual 2022</em>. https://portales.bancochile.cl/uploads/000/045/680/42b47795-da00-472d-93c7-323ce640b28f/original/Memoria_BCH_2022_interactiva-Optimizada.pdf</p></li>
+<li><p><em>Indicador de morosidad de 90 días o más individual del Sistema Bancario</em>. (2023, agosto). CMF. https://www.cmfchile.cl/portal/estadisticas/617/w3-propertyvalue-28914.html</p></li>
+<li></li>
 </ul>
 </section>
 </section>
