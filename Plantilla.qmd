@@ -25,11 +25,27 @@ Finalmente, y esta ya es una motivación más personal, escogí este activo porq
 
 El contexto financiero del Chile será útil para comprender tanto su posición como el desempeño en el mercado. En esta parte del trabajo se hará una descripción estadística de la acción, como también se analizará una variable económica relevante para el estudio.
 
-![](photos/Captura%20de%20Pantalla%202023-09-27%20a%20la(s)%2023.01.56.png)
+```{r}
+library(tidyverse)
+library(tidyquant) 
+
+end <- as_date("2023-10-25")
+
+CHILE <- tq_get("CHILE.SN", get = "stock.prices", from = "2018-10-25", to = end)
+
+CHILE %>%
+  ggplot(aes(x = date, y = close)) +
+  geom_line() +
+  labs(title = "CHILE Line Chart", y = "Closing Price", x = "") + 
+  theme_tq() +
+  geom_hline(yintercept = mean(CHILE$close), linetype = "dashed", color = "red") +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
 
 Gráfico 1: Historial de precios últimos 5 años.
 
-El Gráfico 1 muestro el precio histórico de la acción en un periodo de 5 años. Podemos identificar que a principios del segundo semestre del 2019, la acción rondaba los \$105, sin embargo, la primera caída significativa que se logra identificar es en octubre del 2019, la crisis social. Podemos ver que el precio de la acción continuó disminuyendo producto de la crisis sanitaria, periodo en el que llegó a su mínimo histórico (\$57,15). Desde ese entonces, la accón ha logrado repuntar alcanzando, al día de hoy, un precui de \$90,15 por acción.
+El Gráfico 1 muestro el precio histórico de la acción en un periodo de 5 años. Podemos identificar que a principios del segundo semestre del 2019, la acción rondaba los \$105, sin embargo, la primera caída significativa que se logra identificar es en octubre del 2019, la crisis social. Podemos ver que el precio de la acción continuó disminuyendo producto de la crisis sanitaria, periodo en el que llegó a su mínimo histórico (\$57,15). Desde ese entonces, la acción ha logrado repuntar alcanzando, al día de hoy, un precio de \$90,15 por acción.
 
 Hay ciertos riesgos que hay que tener presentes a la hora de invertir en un activo de este tipo. A continuación hablaré sobre algunos, explicando el efecto sobre el precio de la acción. En primer lugar está el Riesgo de Mercado, que hace referencia a que el precio de la acción oscile dada ciertas condiciones en el marcado, como por ejemplo, eventos económicos globales, lo que puede provocar una disminución en el valor del activo. Al ser un banco, el activo está expuesto al Riesgo Crediticio, de tal manera que el incumplimiento de distintas obligaciones pueden afectar negativamente el precio de la acción. Otro riesgo súper importante en la industria es el Riego de Tasa de Interés, de tal manera que si hay un aumento inesperado en la tasa de interés, esto puede provocar que hayan menores rendimientos, afectando la calidad del activo.
 
@@ -156,7 +172,7 @@ A continuación, se presentará un código en R Studio en el cual, como se menci
 
 La fórmula matemática aplicada para el modelo alternativo es la siguiente:
 
-![](Captura de Pantalla 2023-10-26 a la(s) 20.24.53.png)
+![](Captura%20de%20Pantalla%202023-10-26%20a%20la(s)%2020.24.53.png)
 
 Donde C es el precio de la opción, p es la probabilidad implícita de ascendo, (1-p) es la probabilidad implícita de descenso, Cu es el valor de la opción en estado up, mientras que Cd es el valor de la opción en estado down. Por último, Rf corresponde a la tasa libre de riesgo.
 

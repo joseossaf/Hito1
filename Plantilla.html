@@ -218,7 +218,7 @@ Attaching package: 'zoo'</code></pre>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>current_price <span class="ot">&lt;-</span> <span class="fu">getQuote</span>(symbol)<span class="sc">$</span>Last</span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"El precio actual de la acción del Banco de Chile (CHILE) es:"</span>, current_price, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>El precio actual de la acción del Banco de Chile (CHILE) es: 91.24 </code></pre>
+<pre><code>El precio actual de la acción del Banco de Chile (CHILE) es: 94.25 </code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Datos desde Yahoo Finance</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">getSymbols</span>(symbol, <span class="at">from =</span> <span class="st">"2018-10-23"</span>, <span class="at">to =</span> <span class="st">"2023-10-24"</span>, <span class="at">src =</span> <span class="st">"yahoo"</span>, <span class="at">adjust =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -260,7 +260,7 @@ Attaching package: 'zoo'</code></pre>
 <span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>precio_call <span class="ot">&lt;-</span> <span class="fu">black_scholes</span>(S, K, T, r, sigma)</span>
 <span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"El precio de la opción call es:"</span>, precio_call, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>El precio de la opción call es: 3.195069 </code></pre>
+<pre><code>El precio de la opción call es: 6.203991 </code></pre>
 </div>
 </div>
 </section>
@@ -272,6 +272,9 @@ Attaching package: 'zoo'</code></pre>
 <section id="aplicacion-modelo-adicional" class="level3">
 <h3 class="anchored" data-anchor-id="aplicacion-modelo-adicional">Aplicacion modelo adicional</h3>
 <p>A continuación, se presentará un código en R Studio en el cual, como se mencionó anteriormente, se usa el Modelo Binomial como modelo de valorización alternativo.</p>
+<p>La fórmula matemática aplicada para el modelo alternativo es la siguiente:</p>
+<p><img src="Captura%20de%20Pantalla%202023-10-26%20a%20la(s)%2020.24.53.png" class="img-fluid"></p>
+<p>Donde C es el precio de la opción, p es la probabilidad implícita de ascendo, (1-p) es la probabilidad implícita de descenso, Cu es el valor de la opción en estado up, mientras que Cd es el valor de la opción en estado down. Por último, Rf corresponde a la tasa libre de riesgo.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quantmod)</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>symbol <span class="ot">&lt;-</span> <span class="st">"CHILE.SN"</span></span>
@@ -288,7 +291,7 @@ Attaching package: 'zoo'</code></pre>
 <span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>current_price <span class="ot">&lt;-</span> <span class="fu">getQuote</span>(symbol)<span class="sc">$</span>Last</span>
 <span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"El precio actual de la acción del Banco de Chile (CHILE) es:"</span>, current_price, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>El precio actual de la acción del Banco de Chile (CHILE) es: 91.24 </code></pre>
+<pre><code>El precio actual de la acción del Banco de Chile (CHILE) es: 94.25 </code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Parámetros función</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>S0 <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(current_price)  <span class="co"># Precio actual de CHILE</span></span>
@@ -323,7 +326,7 @@ Attaching package: 'zoo'</code></pre>
 <span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"El precio de la opción utilizando el modelo binomial es:"</span>, option_price, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>El precio de la opción utilizando el modelo binomial es: 1.493321 </code></pre>
+<pre><code>El precio de la opción utilizando el modelo binomial es: 2.021341 </code></pre>
 </div>
 </div>
 </section>
